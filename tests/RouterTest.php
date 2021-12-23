@@ -2,6 +2,7 @@
 namespace Elodie\Router\Tests;
 
 use Elodie\Router\Route;
+use Elodie\Router\RouteAlreadyExistsException;
 use Elodie\Router\RouteNotFoundException;
 use Elodie\Router\Router;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,10 @@ public function test() {
     // Check if route no exist
     $this->expectException(RouteNotFoundException::class);
     $this->assertEquals($route, $router->get("fail"));
+
+    // Check if route exist
+    $this->expectException(RouteAlreadyExistsException::class);
+    $this->assertEquals($route, $router->add(new Route("home", "/", function () {})));
 }
 
 }

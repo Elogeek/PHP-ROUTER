@@ -57,13 +57,6 @@ class Route {
     }
 
     /**
-     * @param string $path
-     */
-    public function setPath(string $path): void {
-        $this->path = $path;
-    }
-
-    /**
      * @return array|callable
      */
     public function getCallable(): callable|array {

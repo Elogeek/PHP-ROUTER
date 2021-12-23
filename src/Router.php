@@ -17,26 +17,39 @@ class Router {
     /**
      * @param Route $route
      * @return $this
+     * @throws RouteAlreadyExistsException
      */
     public function add(Route $route): self {
-        $this->routes[$route->getName()] = $route;
-        return  $this;
-    }
-
-    public function get(string $name): ?Route {
-        foreach ($this->routes as $route) {
-            if($route->getName() ===$name) {
-                return $route;
-            }
+        if ($this->has($route->getName())) {
+            throw new RouteAlreadyExistsException();
         }
-        throw new RouteNotFoundException();
+        $this->routes[$route->getName()] = $route;
+        return $this;
     }
 
     /**
-     * @return array|Route[]
+     * @param string $name
+     * @return Route
      */
-    public  function getRouteCollection(): array {
-        return $this->routes;
+    public function get(string $name): Route {
+        if (!$this->has($name)) {
+            throw new RouteNotFoundException();
+        }
+        return $this->routes[$name];
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function has(string $name): bool {
+        return isset($this->routes[$name]);
+    }
+
+    /**
+     * @return Route[]
+     */
+    public function getRouteCollection(): array {
+        return $this->routes;
+    }
 }
