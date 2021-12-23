@@ -63,7 +63,7 @@ class Route {
         $this->callable = $callable;
     }
 
-    // transformer le chemin en regex pour récupérer ici son id
+    // Transform the path into a regex to retrieve its id here
     public function test(string $path): bool {
         $pattern = str_replace("/", "\/", $this->path);
         $pattern = sprintf("/^%s$/", $pattern);
@@ -87,7 +87,7 @@ class Route {
 
         preg_match_all("/\{(\w+)\}/", $this->path, $paramMatches);
 
-        // dépile un élément au début d'un tableau, supprimer le 1er élément
+        // Pops an element at the start of an array, delete the 1st element
         $parameters = $paramMatches[1];
 
         $argsValue = [];
@@ -102,7 +102,7 @@ class Route {
             else {
                 $reflectionFunc = new ReflectionFunction($this->callable);
             }
-            // Récupère les paramètres du tableau  dans le bon ordre
+            // Get the parameters from the array in the correct order
             $args = array_map(fn (ReflectionParameter $param) => $param->getName(), $reflectionFunc->getParameters());
             $argsValue = array_map(function (string $name) use ($parameters) {
                 return $parameters[$name];
