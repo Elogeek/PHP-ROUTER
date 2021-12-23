@@ -1,2 +1,2 @@
-# PHP-ROUTER
+# ROUTER
 Create a router for unit tests
