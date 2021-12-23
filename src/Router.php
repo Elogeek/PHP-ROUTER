@@ -2,6 +2,7 @@
 
 namespace Elodie\Router;
 
+use function PHPUnit\Framework\throwException;
 
 /**
  *  Class RouterTest
@@ -13,6 +14,31 @@ class Router {
      * @var Route[]
      */
     private array $routes = [];
+
+    /**
+     * Return path url
+     * @param string $path
+     * @return Route
+     */
+    public function match(string $path): Route {
+        foreach ($this->routes as $route) {
+            if ($route->test($path)) {
+                return $route;
+            }
+
+        }
+        throw new RouteNotFoundException();
+    }
+
+    /**
+     * Shortcut the function match and call $path
+     * @param string $path
+     * @return false|mixed
+     * @throws \ReflectionException
+     */
+    public function call(string $path) {
+        return $this->match($path)->call($path);
+    }
 
     /**
      * @param Route $route
